@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask_cors import CORS
 
 from dlgo import agent
 from dlgo import goboard_fast as goboard
@@ -36,9 +37,11 @@ def get_web_app(bot_map):
     here = os.path.dirname(__file__)
     static_path = os.path.join(here, 'static')
     app = Flask(__name__, static_folder=static_path, static_url_path='/static')
+    CORS(app)
 
     @app.route('/select-move/<bot_name>', methods=['POST'])
     def select_move(bot_name):
+        print("bot_name: ", bot_name)
         content = request.json
         board_size = content['board_size']
         game_state = goboard.GameState.new_game(board_size)

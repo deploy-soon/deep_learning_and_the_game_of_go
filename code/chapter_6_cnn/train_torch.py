@@ -123,7 +123,7 @@ class Board(Dataset):
 
 class Train:
 
-    def __init__(self, batch_size=512, learning_rate=0.0001, epochs=200):
+    def __init__(self, batch_size=512, learning_rate=0.00008, epochs=75):
         data = Board()
         self.epochs = epochs
         self.train_data = Subset(data, list(range(40000)))

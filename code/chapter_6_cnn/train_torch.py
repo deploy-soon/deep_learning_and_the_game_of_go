@@ -29,20 +29,58 @@ class Model(nn.Module):
             nn.Conv2d(1, 32, kernel_size=3, padding=1),
             nn.BatchNorm2d(32),
             nn.ReLU(True),
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.Conv2d(32, 64, kernel_size=1),
             nn.BatchNorm2d(64),
             nn.ReLU(True),
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(True),
+            nn.Conv2d(128, 256, kernel_size=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(True),
+            nn.Conv2d(256, 512, kernel_size=3, padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(True),
+            nn.Conv2d(512, 256, kernel_size=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(True),
+            nn.Conv2d(256, 128, kernel_size=3, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(True),
+            nn.Conv2d(128, 64, kernel_size=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(True),
+            nn.Conv2d(64, 32, kernel_size=1),
+            nn.ReLU(True),
+            nn.Conv2d(32, 1, kernel_size=1),
+            nn.Flatten(),
+        )
+        """
+        self.conv = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(True),
+            nn.Conv2d(32, 64, kernel_size=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(True),
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(True),
+            nn.Conv2d(128, 128, kernel_size=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(True),
+            nn.Conv2d(128, 256, kernel_size=3, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(True),
             nn.MaxPool2d(2),
             nn.Flatten(),
-            nn.Linear(128 * 4 * 4, 512),
+            nn.Linear(256 * 4 * 4, 1024),
+            nn.ReLU(True),
+            nn.Linear(1024, 512),
             nn.ReLU(True),
             nn.Dropout(0.2),
             nn.Linear(512, 81),
         )
-        """
         self.conv = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=3, padding=1),
             nn.ReLU(True),
@@ -60,6 +98,7 @@ class Model(nn.Module):
             nn.Linear(128, 81),
         )
         """
+        init_weights(self.conv.modules())
 
     def forward(self, x):
         score = self.conv(x)
@@ -84,7 +123,7 @@ class Board(Dataset):
 
 class Train:
 
-    def __init__(self, batch_size=64, learning_rate=0.0003, epochs=60):
+    def __init__(self, batch_size=512, learning_rate=0.0001, epochs=200):
         data = Board()
         self.epochs = epochs
         self.train_data = Subset(data, list(range(40000)))
@@ -131,7 +170,6 @@ class Train:
             correct += (predicted == y).sum().item()
         vali_loss /= len(self.vali_data)
         print("test acc: {}".format(100*correct/total))
-        print(score[0])
         return vali_loss
 
     def run(self):

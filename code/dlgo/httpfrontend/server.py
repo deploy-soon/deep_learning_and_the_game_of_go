@@ -41,7 +41,6 @@ def get_web_app(bot_map):
 
     @app.route('/select-move/<bot_name>', methods=['POST'])
     def select_move(bot_name):
-        print("bot_name: ", bot_name)
         content = request.json
         board_size = content['board_size']
         game_state = goboard.GameState.new_game(board_size)

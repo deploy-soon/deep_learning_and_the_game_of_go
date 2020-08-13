@@ -91,7 +91,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </head>
 <body>
 
-<div>Engine: random bot (chapter 3)</div>
+<div>Engine: cnn bot :)</div>
 <div><a href="#" onclick="resetGame(event);">new game</a></div>
 <div id="board"></div>
 <div>
@@ -211,7 +211,7 @@ jsetup.create('board', function(canvas) {
     applyMove(JGO.BLACK, coord);
 
     waitForBot();
-    fetch('http://localhost:5000/select-move/cnn', {
+    fetch('http://147.46.242.107/select-move/cnn', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
